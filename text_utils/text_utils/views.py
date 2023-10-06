@@ -3,11 +3,7 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'home.html')
-    # return HttpResponse("hello")
-
-
-def about(request):
-    return HttpResponse(" <h1> hello about </h1> ")
+    
 
 
 
