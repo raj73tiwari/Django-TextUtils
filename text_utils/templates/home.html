@@ -1,0 +1,120 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container-sm pt-3" style="margin: auto; max-width: 800px">
+  <h2>Analyze Text</h2>
+  <form class="row g-3 pt-2" action='/analyze' method="post"  >{% csrf_token %}
+    <div class="form-floating">
+      <textarea
+        name="text"
+        class="form-control"
+        placeholder="Enter text here"
+        id="my-text-area"
+        style="color: #c9d1d9; background-color: #261f2d; height: 200px"></textarea>
+      <label htmlFor="floatingTextarea">Enter Text to Analyze...</label>
+    </div>
+
+    <div class="container pt-3">
+      <div class="row mx-auto">
+        <div class="col-sm-12 col-md-6  ">
+          <div class="form-check form-switch">
+            <input class="form-check-input" style="cursor: pointer" type="checkbox" role="switch" id="up_check_id" name="upper" onclick="handleCaseCheck()" />
+            <label class="form-check-label" htmlFor="flexSwitchCheckDefault3"> Convert to uppercase </label>
+          </div>
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" style="cursor: pointer" type="checkbox" role="switch" id="low_check_id" name="lower"
+            onclick="handleCaseCheck()"/>
+            <label class="form-check-label" htmlFor="flexSwitchCheckDefault4"> Convert to lowercase </label>
+          </div>
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" style="cursor: pointer" type="checkbox" role="switch" id="xtra_space_id" name="rmvXtraSpc"  onclick="handleSpaceCheck()"/>
+            <label class="form-check-label" htmlFor="flexSwitchCheckDefault7"> Remove extra spaces </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" style="cursor: pointer" type="checkbox" role="switch" id="all_space_id" name="rmvAllSpc" onclick="handleSpaceCheck()"/>
+            <label class="form-check-label" htmlFor="all_space_id"> Remove all spaces </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" style="cursor: pointer" type="checkbox" role="switch" id="flexSwitchCheckDefault6" name="rmvPunc" />
+            <label class="form-check-label" htmlFor="flexSwitchCheckDefault6"> Remove punctuations </label>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block mb-5">
+      <button type="submit" class="btn btn-dark mx-2 my-auto">Analyze</button>
+      <button type="button" class="btn btn-dark mx-2 my-auto" onclick="handleCopy()" id="copy_id">Copy<span class="bi bi-clipboard mx-2"></span></button>
+      <button type="button" class="btn btn-dark mx-2 my-auto" onclick="handleSpeech()">Speak <i class="bi bi-soundwave"></i></button>
+      <button type="button" class="btn btn-outline-danger mx-2 my-auto" onclick="handleClear()">Clear All</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const handleCopy = () => {
+    var text = document.getElementById("my-text-area");
+    if (text.value.length === 0) {
+      alert("Text Area Empty ! Please enter some text to continue. ", "danger");
+    } else {
+      navigator.clipboard.writeText(text.value);
+      document.getElementById("copy_id").innerHTML = "Copied ";
+      alert("Copied the text: " + text.value);
+    }
+  };
+
+  const handleSpeech = () => {
+    var text = document.getElementById("my-text-area");
+    if (text.value.length === 0) {
+      alert("Text Area Empty ! Please enter some text to continue. ", "danger");
+    } else {
+      let msg = new SpeechSynthesisUtterance();
+      msg.text = text.value;
+      window.speechSynthesis.speak(msg);
+    }
+  };
+  const handleClear = () => {
+    var text = document.getElementById("my-text-area");
+    if (text.value.length === 0) {
+      alert("Text Area Empty ! Please enter some text to continue. ", "danger");
+    } else {
+      text.value="";
+      
+    }
+  };
+  const handleCaseCheck=()=>{
+    var up= document.getElementById("up_check_id")
+    var low= document.getElementById("low_check_id")
+    if(low.checked){
+        up.disabled=true
+    }
+    if(up.checked){
+        low.disabled=true
+    }
+    if(!low.checked){
+        up.disabled=false
+    }
+    if(!up.checked){
+        low.disabled=false
+    }
+  }
+  const handleSpaceCheck=()=>{
+    var xtra= document.getElementById("xtra_space_id")
+    var all= document.getElementById("all_space_id")
+    if(xtra.checked){
+        all.disabled=true
+    }
+    if(all.checked){
+        xtra.disabled=true
+    }
+    if(!xtra.checked){
+        all.disabled=false
+    }
+    if(!all.checked){
+        xtra.disabled=false
+    }
+  }
+</script>
+
+{% endblock %}

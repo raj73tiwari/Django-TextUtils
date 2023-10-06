@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container-sm pt-3" style="margin: auto; max-width: 800px">
+  <h2>Analyzed Text</h2>
+  <form class="row g-3 pt-2" action="/" method="get">
+    <div class="form-floating">
+      <div class="form-control" style="color: #c9d1d9; background-color: #261f2d; height: 200px">
+        <h6 class="mt-2" id="my-text"><pre>{{ text }}</pre></h6>
+      </div>
+      <label htmlFor="my-text">Operations- {{operations}} </label>
+    </div>
+
+    <div class="container pt-3">
+      <div class="row mx-auto">
+        <div class="col-sm-12 col-md-6 pb-3">
+          <h5>Text Summary</h5>
+          <ul>
+            <li>Total Characters : {{ totalChar }}</li>
+            <li>Total Words : {{ totalWords }}</li>
+            <li>Total Punctuations : {{ totalPunc }}</li>
+            <li>Total Spaces : {{ totalSpace }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block mb-5">
+      <button type="submit" class="btn btn-dark my-auto mx-2"><span class="bi bi-arrow-left-short me-1"></span>Go Back</button>
+      <button type="button" class="btn btn-dark mx-2 my-auto" onclick="handleCopy()" id="copy_id">Copy<span class="bi bi-clipboard mx-2"></span></button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const handleCopy = () => {
+    var text = document.getElementById("my-text").innerText;
+
+    navigator.clipboard.writeText(text);
+    document.getElementById("copy_id").innerHTML = "Copied ";
+    alert("Copied the text: " + text);
+  };
+</script>
+{% endblock %}
